@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package proto.wallet_service.v1;
+
+option go_package = "Assignment_Golang/wallet/proto/wallet_service/v1";
+
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service WalletService {
+  rpc GetSaldoByUserID(GetSaldoByUserIDRequest) returns (GetSaldoByUserIDResponse){
+    option (google.api.http) = {
+            get: "/v1/saldo/{id}"
+        };
+  }
+  rpc GetHistoryTransactionByUserID(GetHistoryTransactionByUserIDRequest) returns (GetHistoryTransactionByUserIDResponse){
+    option (google.api.http) = {
+            get: "/v1/history/{id}"
+        };
+  }
+  rpc TopUpSaldoUser(TopUpSaldouserRequest) returns (MutationResponse){
+    option (google.api.http) = {
+            post: "/v1/topup/{id_user}"
+            body: "*"
+        };
+  }
+  rpc DecreaseSaldoUser(DecreaseSaldouserRequest) returns (MutationResponse){
+    option (google.api.http) = {
+            post: "/v1/decrease/{id_user}"
+            body: "*"
+        };
+  }
+  rpc TransferSaldoUser(TransferSaldouserRequest) returns (MutationResponse){
+    option (google.api.http) = {
+            post: "/v1/transfer"
+            body: "*"
+        };
+  }
+}
+
+message SaldoWallet {
+  int32 id = 1;
+  int32 id_user = 2;
+  string name = 3;
+  double saldo = 4;
+}
+
+message HistoryTransaction {
+  int32 id = 1;
+  int32 id_user = 2;
+  string name = 3;
+  double saldo = 4;
+  double amount = 5;
+  string transaction_type = 6;
+  google.protobuf.Timestamp transaction_date = 7;
+}
+
+message GetHistoryTransactionByUserIDRequest {
+  int32 id = 1;
+}
+
+message GetHistoryTransactionByUserIDResponse {
+  repeated HistoryTransaction history_transactions = 1;
+}
+
+message GetSaldoByUserIDRequest {
+  int32 id = 1;
+}
+
+message GetSaldoByUserIDResponse {
+  SaldoWallet saldo_wallet = 1;
+}
+
+message TopUpSaldouserRequest {
+  int32 id_user = 1;
+  double amount = 2;
+}
+
+message DecreaseSaldouserRequest {
+  int32 id_user = 1;
+  double amount = 2;
+}
+
+message TransferSaldouserRequest {
+  int32 id_user_from = 1;
+  int32 id_user_to = 2;
+  double amount = 3; 
+}
+
+message MutationResponse {
+  string message = 1;
+}

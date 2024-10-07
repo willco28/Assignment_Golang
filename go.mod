@@ -1,4 +1,4 @@
-module Assignment-Golang
+module Assignment_Golang
 
 go 1.22.1
 

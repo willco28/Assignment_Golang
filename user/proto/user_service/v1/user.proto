@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package proto.user_service.v1;
+
+option go_package = "Assignment_Golang/user/proto/user_service/v1";
+
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service UserService {
+  rpc Getusers(google.protobuf.Empty) returns (GetUserResponse){
+    option (google.api.http) = {
+            get: "/v1/users"
+        };
+  }
+  rpc GetUserByID(GetUserByIDRequest) returns (GetUserByIDResponse){
+    option (google.api.http) = {
+            get: "/v1/users/{id}"
+        };
+  }
+  rpc CreateUser(CreateuserRequest) returns (MutationResponse){
+    option (google.api.http) = {
+            post: "/v1/users"
+            body: "*"
+        };
+  }
+  rpc UpdateUser(UpdateUserRequest) returns (MutationResponse){
+    option (google.api.http) = {
+            put: "/v1/users/{id}"
+            body: "*"
+        };
+  }
+  rpc DeleteUser(DeleteUserRequest) returns (MutationResponse){
+    option (google.api.http) = {
+            delete: "/v1/users/{id}"
+            body: "*"
+        };
+  }
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message GetUserResponse {
+  repeated User users = 1;
+}
+
+message GetUserByIDRequest {
+  int32 id = 1;
+}
+
+message GetUserByIDResponse {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4; 
+}
+
+message DeleteUserRequest {
+  int32 id = 1;
+}
+
+message CreateuserRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3; 
+}
+
+message MutationResponse {
+  string message = 1;
+}
